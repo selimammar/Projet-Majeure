@@ -27,7 +27,7 @@ for (var vDto_i in vDto) {
 var addForm = document.getElementById("add");
 var addFormCont = "<h1> Add Vehicle </h1>";
 addFormCont += formCont;
-addFormCont += "<input type='button' value='Add Vehicle' onclick='add_vehicle()'/>"
+addFormCont += "<input type='button' value='Add Vehicle' onclick='AddVehicle()'/>"
 addForm.innerHTML = addFormCont;
 
 var delForm = document.getElementById("del");

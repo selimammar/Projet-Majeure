@@ -1,0 +1,47 @@
+form {
+    padding: 20px;
+    width: 20%;
+    height: 10%;
+    margin: 0 auto;
+    font-size: 0.75em;
+}
+
+#add{
+    position: absolute;
+    right: 35%;
+    bottom: 30%;
+}
+
+#del{
+    position: absolute;
+    right: 5%;
+    bottom: 30%;
+}
+
+form h1{
+    font-size: 1em;
+    margin: 0;
+    color: #9b9b8d;
+}
+
+form label, form input{
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+
+
+}
+
+#add input[type=button]{
+    background: #249120;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+}
+
+#del input[type=button]{
+    background: #ad4343;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+}

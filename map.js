@@ -29,17 +29,20 @@ const data = {
     "liquidType": "ALL",
     "lon": 0,
     "type": "CAR"
-}; 
+};
 
-fetch (url+'/vehicle/'+teamuuid, {
-    method: 'POST',
-    body: JSON.stringify(data),
+function AddVehicle(){
     
-})
-.then(response => response.json())
-.then(data => {
-    console.log('Success:', data);
-})
-.catch((error) => {
-    console.error('Error:', error);
-});
+    fetch (url+'/vehicle/'+teamuuid, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
