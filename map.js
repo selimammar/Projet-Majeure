@@ -20,7 +20,7 @@ fetch(url+'/facility')
 });
 
 const data = {
-    "crewMember": 5,
+    "crewMember": 8,
     "facilityRefID": 94,
     "fuel": 0,
     "id": 0,
@@ -32,9 +32,12 @@ const data = {
 };
 
 function AddVehicle(){
-    
+
     fetch (url+'/vehicle/'+teamuuid, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+          },
         body: JSON.stringify(data),
         
     })
@@ -42,6 +45,19 @@ function AddVehicle(){
     .then(data => {
         console.log('Success:', data);
     })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function  DelVehicle(){
+    fetch (url+'/vehicle/'+teamuuid, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+          },
+    })
+    .then (response => console.log('Success:', response.ok))
     .catch((error) => {
         console.error('Error:', error);
     });

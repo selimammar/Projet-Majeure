@@ -33,5 +33,5 @@ addForm.innerHTML = addFormCont;
 var delForm = document.getElementById("del");
 var delFormCont = "<h1> Delete Vehicle </h1>";
 delFormCont += formCont;
-delFormCont += "<input type='button' value='Delete Vehicle' onclick='delll()'/>"
+delFormCont += "<input type='button' value='Delete Vehicle' onclick='DelVehicle()'/>"
 delForm.innerHTML = delFormCont;
