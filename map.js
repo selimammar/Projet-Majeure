@@ -20,8 +20,8 @@ fetch(url+'/facility')
 });
 
 const data = {
-    "crewMember": 8,
-    "facilityRefID": 94,
+    "crewMember": 5,
+    "facilityRefID": 152,
     "fuel": 0,
     "id": 0,
     "lat": 0,
@@ -43,11 +43,9 @@ function AddVehicle(){
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Success:', data);
+        console.log('Added:', data);
     })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    .catch(error => console.error('Error:', error));
 }
 
 function  DelVehicle(){
@@ -57,7 +55,7 @@ function  DelVehicle(){
             'Content-Type': 'application/json',
           },
     })
-    .then (response => console.log('Success:', response.ok))
+    .then (response => console.log('DeletedAll:', response.ok))
     .catch((error) => {
         console.error('Error:', error);
     });
