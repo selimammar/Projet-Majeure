@@ -12,6 +12,11 @@ var FireIcon = L.icon({
 
 var VehicleIcon = L.icon({
     iconUrl :  'camion.png',
+    iconSize : [50,50],
+})
+
+var VehicleIcon2 = L.icon({
+    iconUrl :  'camion2.png',
     iconSize : [30,40],
 })
 
@@ -44,11 +49,14 @@ fetch(url+'/vehicle')
 .then (response =>  response.json())
 .then(response => {   
 response.forEach(vehicle => {
-        console.log(vehicle);
+    if (vehicle.facilityRefID == 173){
         var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
         var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(map).bindPopup(bindText)//.openPopup();
-    })
-    
+    }
+    else {
+        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(map).bindPopup(bindText)//.openPopup();
+    }})   
 });
 
 
