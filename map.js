@@ -97,7 +97,6 @@ function box(){
     var bD_Metals= true;
     var bE_Electric= true;
 
-    console.log('aaa')
 
     A.onchange = function() {
         if (bA){
