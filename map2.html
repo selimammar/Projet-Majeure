@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Map</title>
+    <link rel="stylesheet" href="map.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script> 
+
+</head>
+<body>
+    <div id="map"></div>
+    <form id="add"></form>
+    <script src="map2.js"></script>
+    <script src="script.js"></script>
+    <fieldset>
+        <legend>Afficher/Cacher les feux</legend>
+    
+        <div>
+          <input type="checkbox" id="A" name="type" value="A" checked>
+          <label for="scales">Type A</label>
+        </div>
+    
+        <div>
+          <input type="checkbox" id="B_Gasoline" name="type" value = "B_Gasoline" checked>
+          <label for="horns">Type B Gasoline</label>
+        </div>
+        <div>
+            <input type="checkbox" id="B_Alcohol" name="type" value = "B_Alcohol" checked>
+            <label for="horns">Type B Alcohol</label>
+          </div>
+          <div>
+            <input type="checkbox" id="B_Plastics" name="type" value = "B_Plastics" checked>
+            <label for="horns">Type B_Plastics</label>
+          </div>
+          <div>
+            <input type="checkbox" id="C_Flammable_Gases" name="type" value = "C_Flammable_Gases" checked>
+            <label for="horns">Type C_Flammable_Gases</label>
+          </div>
+          <div>
+            <input type="checkbox" id="D_Metals" name="type" value = "D_Metals" checked>
+            <label for="horns">Type D_Metals</label>
+          </div>
+          <div>
+            <input type="checkbox" id="E_Electric" name="type" value = "E_Electric" checked>
+            <label for="horns">Type E_Electric</label>
+          </div>
+        <script> box();</script>
+    </fieldset>
+
+</body>
+</html> 
