@@ -13,7 +13,7 @@ var FireIcon = L.icon({
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap'
-}).addTo(map);
+}).addTo(map);http://vps.cpe-sn.fr:8081/facility
 
 var url = "http://vps.cpe-sn.fr:8081"
 var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
