@@ -15,8 +15,24 @@
 </head>
 <body>
     <div id="map"></div>
-    <form id="add"></form>
-    <!-- <form id="del"></form> -->
+    <div id="vehicle">
+        <ul>
+            <li onclick="CreateForm('add')">Add</li>
+            <li onclick="CreateForm('edit')">Edit</li>
+            <li onclick="CreateForm('del')">Del</li>
+        </ul>
+        <form id="add"></form>
+        <form id="edit"></form>
+        <form id="del">
+            <h1>Delete by id</h1>
+            <label>id</label>
+            <input type="text" name="id"/>
+            <input type="button" value="Del"/><br><br>
+            <h1>Delete All</h1>
+            <input type="button" value="DelAll"/>
+        </form>
+        <form id="edit"></form>
+    </div>
     <script src="map.js"></script>
     <script src="script.js"></script>
 </body>

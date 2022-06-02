@@ -30,8 +30,33 @@ addFormCont += formCont;
 addFormCont += "<input type='button' value='Add Vehicle' onclick='AddVehicle(this.form)'/>"
 addForm.innerHTML = addFormCont;
 
+var editForm = document.getElementById("edit");
+var editFormCont = "<h1> Edit Vehicle by ID </h1>";
+editFormCont += "<label> ID to be edited</label><input type='text' name='editId'>"
+editFormCont += formCont;
+editFormCont += "<input type='button' value='Edit Vehicle' onclick='EditVehicle(this.form)'/>"
+editForm.innerHTML = editFormCont;
+
 var delForm = document.getElementById("del");
-var delFormCont = "<h1> Delete Vehicle </h1>";
-delFormCont += formCont;
-delFormCont += "<input type='button' value='Delete Vehicle' onclick='DelllllllVehicle()'/>"
-delForm.innerHTML = delFormCont;
+
+addForm.style.display="none";
+editForm.style.display="none";
+delForm.style.display="none";
+
+
+function CreateForm(formType){
+    if (formType=='add'){    
+        addForm.style.display="";
+        editForm.style.display="none";
+        delForm.style.display="none";
+    }else if (formType=='edit'){
+        addForm.style.display="none";
+        editForm.style.display="";
+        delForm.style.display="none";
+    }else{
+        addForm.style.display="none";
+        editForm.style.display="none";
+        delForm.style.display="";
+    }
+
+}
