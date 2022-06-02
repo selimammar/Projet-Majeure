@@ -10,6 +10,11 @@ var FireIcon = L.icon({
     iconSize : [40,60],
 })
 
+var VehicleIcon = L.icon({
+    iconUrl :  'camion.png',
+    iconSize : [30,40],
+})
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap'
@@ -21,24 +26,35 @@ fetch(url+'/facility')
     .then (response =>  response.json())
     .then(reponse => {
     reponse.forEach(facility => {
-        var marker = L.marker([facility.lat, facility.lon],{icon: FacilityIcon}).addTo(map).bindPopup('Id = ' +facility.id +'<br>'+'Nom :' +facility.name).openPopup()
-     } )
-    
-    
+        var marker = L.marker([facility.lat, facility.lon],{icon: FacilityIcon}).addTo(map).bindPopup('Id = ' +facility.id +'<br>'+'Nom :' +facility.name)//.openPopup()
+     } )    
 });
+
 fetch(url+'/fire')
 .then (response =>  response.json())
 .then(reponse => {
 reponse.forEach(fire => {
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(map).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(map).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)//.openPopup()
+    })
+    
+});
+
+
+fetch(url+'/vehicle')
+.then (response =>  response.json())
+.then(response => {   
+response.forEach(vehicle => {
+        console.log(vehicle);
+        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(map).bindPopup(bindText)//.openPopup();
     })
     
 });
 
 
 const data = {
-    "crewMember": 9,
-    "facilityRefID": 173,
+    "crewMember": 0,
+    "facilityRefID": 0,
     "fuel": 0,
     "id": 0,
     "lat": 0,
@@ -48,7 +64,31 @@ const data = {
     "type": "CAR"
 };
 
-function AddVehicle(){
+function AddVehicle(form){
+
+    data.crewMember     =parseInt(form.crewMember.value);
+    data.facilityRefID  =parseInt(form.facilityRefID.value);
+    data.fuel           =parseInt(form.fuel.value);
+    data.id             =parseInt(form.id.value);
+    data.lat            =parseInt(form.id.value);
+    data.liquidQuantity =parseInt(form.liquidQuantity.value);
+    data.liquidType     =form.liquidType.value;
+    data.lon            =parseInt(form.lon.value);
+    data.type           =form.type.value;
+    console.log("vehicle to add :", data)
+    // verifier pas vide
+    ok = true;
+    Object.values(data).every(
+        element => {
+            if(element == "" || isNaN(element)){
+                alert("content empty"); 
+                ok = false;
+                return false;
+            }
+            return true;
+        } 
+    );
+    if(!ok){return;}
 
     fetch (url+'/vehicle/'+teamuuid, {
         method: 'POST',
