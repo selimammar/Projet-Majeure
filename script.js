@@ -27,11 +27,11 @@ for (var vDto_i in vDto) {
 var addForm = document.getElementById("add");
 var addFormCont = "<h1> Add Vehicle </h1>";
 addFormCont += formCont;
-addFormCont += "<input type='button' value='Add Vehicle' onclick='AddVehicle()'/>"
+addFormCont += "<input type='button' value='Add Vehicle' onclick='AddVehicle(this.form)'/>"
 addForm.innerHTML = addFormCont;
 
 var delForm = document.getElementById("del");
 var delFormCont = "<h1> Delete Vehicle </h1>";
 delFormCont += formCont;
-delFormCont += "<input type='button' value='Delete Vehicle' onclick='DelVehicle()'/>"
+delFormCont += "<input type='button' value='Delete Vehicle' onclick='DelllllllVehicle()'/>"
 delForm.innerHTML = delFormCont;
