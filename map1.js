@@ -15,28 +15,50 @@ const data = {
     "type": "CAR"
 };
 
-// var ourVehicles=[];
-// GetOurVehicle(facilityID);
-// ourVehicles.forEach(element => {
-//     console.log("aaa",element);
-//     element.fireID = 0 
-// });
-// console.log("ourVehicles :",ourVehicles);
+var ourVehicles=[];
+GetOurVehicle(facilityID);
+console.log("ourVehicles :",ourVehicles);
 
 
 async function GetOurVehicle(facilityID){
     var allVehicle = await GetAllVehicle()
     allVehicle.forEach(vehicle => {
         if (vehicle.facilityRefID== 173){
+            vehicle.fireID=0;
             ourVehicles.push(vehicle);
         }
     });
-    return ourVehicles;
 }
+
+var intervalTimer = setInterval(UpdateVehicles, 5000);
+UpdateVehicles();
 
 
 async function UpdateVehicles(){
-    
+
+    var fires = await GetAllFire();
+    console.log(' got fires : ', typeof fires);
+    console.log("ourVehicles :", typeof ourVehicles);
+    var i=0;
+    ourVehicles.forEach(vehicle =>{
+        console.log('this fire :', fires[i]);
+        console.log('this vehicle :', vehicle);
+        var myfireID = fires[i].id;
+        vehicle.fireID = myfireID;
+        console.log('go to : fire : ', myfireID, ', vehicle : ', vehicle.id);
+        GoToFire(myfireID,vehicle.id);
+        i++;
+    })
+}
+
+async function GetAllFire(){
+    return fetch (url+'/fire')
+    .then(response => response.json())
+    .then(fires => {
+        console.log('Success GetAllFire :', fires);
+        return fires
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 async function GetAllVehicle(){
@@ -205,11 +227,30 @@ async function GetFireByID(fireID){
 
 }
 
-//GetVehicleByID(264);
+//GetVehicleByID(502,264);
 //GetOneFire();
-// GoToFire(759,174);
-// GoToFire(786,262);
-// GoToFire(697,263);
+// 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // GoToFire(702,264);
 // GoToFire(795,841);
 // GoToFire(835,842);

@@ -291,3 +291,8 @@ function coucheLeurs_camions(){
         var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText)//.openPopup();
     }
 })}
+    
+
+
+
+
