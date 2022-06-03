@@ -22,6 +22,7 @@ ul {
     color: white;
     width: 15%;
     max-width: 150px;
+    cursor: pointer;
 }
 
 li {
