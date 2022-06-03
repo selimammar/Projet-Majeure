@@ -15,7 +15,7 @@ var FireIcon = L.icon({
 
 var VehicleIcon = L.icon({
     iconUrl :  'camion.png',
-    iconSize : [70,60],
+    iconSize : [50,30],
 })
 
 var VehicleIcon2 = L.icon({
@@ -174,14 +174,14 @@ function box(){
 function coucheA(){
     feu.forEach(fire =>{
         if (fire.type == 'A'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lA).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lA).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }
     })}
 
 function coucheD_Metals(){
     feu.forEach(fire =>{
     if (fire.type == 'D_Metals'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lD_Metals).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lD_Metals).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }
 })}
     
@@ -189,31 +189,31 @@ function coucheD_Metals(){
 function coucheB_Gasoline(){
     feu.forEach(fire =>{
         if (fire.type == 'B_Gasoline'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lB_Gasoline).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lB_Gasoline).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }})}
 
 function coucheB_Alcohol(){
     feu.forEach(fire =>{
         if (fire.type == 'B_Alcohol'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lB_Alcohol).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lB_Alcohol).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }})}
 
 function coucheB_Plastics(){
     feu.forEach(fire =>{
         if (fire.type == 'B_Plastics'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lB_Plastics).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lB_Plastics).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }})}
 
 function coucheC_Flammable_Gases(){
     feu.forEach(fire =>{
         if (fire.type == 'C_Flammable_Gases'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lC_Flammable_Gases).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lC_Flammable_Gases).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }})}
 
 function coucheE_Electric(){
     feu.forEach(fire =>{
         if (fire.type == 'E_Electric'){
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lE_Electric).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
+        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lE_Electric).bindPopup('ID = ' + fire.id+'<br>'+'Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
     }})}
 
 
@@ -279,7 +279,7 @@ function coucheNos_camions(){
 
     camions.forEach(vehicle =>{
         if (vehicle.facilityRefID == 173){
-            var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+            var bindText = 'ID = ' + vehicle.id+'<br>'+ 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
             var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)//.openPopup();
     }
     })}
@@ -316,17 +316,17 @@ function AddVehicle(form){
     data.facilityRefID  =parseInt(form.facilityRefID.value);
     data.fuel           =parseInt(form.fuel.value);
     data.id             =parseInt(form.id.value);
-    data.lat            =parseInt(form.id.value);
+    data.lat            =parseFloat(form.lat.value);
     data.liquidQuantity =parseInt(form.liquidQuantity.value);
     data.liquidType     =form.liquidType.value;
-    data.lon            =parseInt(form.lon.value);
+    data.lon            =parseFloat(form.lon.value);
     data.type           =form.type.value;
     console.log("vehicle to add :", data)
     // verifier pas vide
     ok = true;
     Object.values(data).every(
         element => {
-            if(element == "" || isNaN(element)){
+            if(element == "" || (isNaN(element)&& typeof element != 'string')){
                 alert("content empty"); 
                 ok = false;
                 return false;
@@ -351,7 +351,7 @@ function AddVehicle(form){
     .catch(error => console.error('Error:', error));
 }
 
-function  DelVehicle(){
+function  DelAllVehicle(){
     fetch (url+'/vehicle/'+teamuuid, {
         method: 'DELETE',
         headers: {
@@ -363,3 +363,105 @@ function  DelVehicle(){
         console.error('Error:', error);
     });
 }
+
+function EditVehicle(form){
+
+    var editId = parseInt(form.editId.value);
+
+    data.crewMember     =parseInt(form.crewMember.value);
+    data.facilityRefID  =parseInt(form.facilityRefID.value);
+    data.fuel           =parseInt(form.fuel.value);
+    data.id             =parseInt(form.id.value);
+    data.lat            =parseFloat(form.lat.value);
+    data.liquidQuantity =parseInt(form.liquidQuantity.value);
+    data.liquidType     =form.liquidType.value;
+    data.lon            =parseFloat(form.lon.value);
+    data.type           =form.type.value;
+
+    // verifier pas vide
+    ok = true;
+    console.log("data before verify empty :", Object.values(data));
+    Object.values(data).every(
+        element => {
+            console.log(element);
+            if(element === "" || (isNaN(element)&& typeof element != 'string')){
+                alert("content empty"); 
+                ok = false;
+                return false;
+            }
+            return true;
+        } 
+    );
+    if(!ok){return;}
+
+    console.log("ID of vehicle to edit :", editId);
+    console.log("to translate to :", data)
+
+    fetch (url+'/vehicle/'+teamuuid+'/'+editId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+          },
+        body: JSON.stringify(data),
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Edited: ', data);
+    })
+    .catch(error => console.error('Error:', error));
+
+}
+
+async function GoToFire(fireID, vehicleID){
+
+    var data = await GetVehicleByID(vehicleID);
+    var fireData = await GetLastFire(fireID);
+    
+    console.log('fireData :',fireData);
+    console.log('vehicle data :', data);
+    data.lon = fireData.lon;
+    data.lat = fireData.lat;
+    console.log('vehicle put data :', data);
+
+    fetch (url+'/vehicle/'+teamuuid+'/'+vehicleID, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+          },
+        body: JSON.stringify(data),
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Vehicle : ', vehicleID, ', Went To Fire');
+    })
+    .catch(error => console.error('Error:', error));
+
+}
+
+async function GetVehicleByID(vehicleID){
+
+    return fetch (url+'/vehicle/'+vehicleID)
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success GetVehicle : id=',vehicleID,' : ', data);
+        return data;
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+async function GetLastFire(fireID){
+    return fetch (url+'/fire'+'/'+fireID)
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success GetFire :', data);
+        return data;
+    })
+    .catch(error => console.error('Error:', error));
+
+}
+
+//GetVehicleByID(264);
+//GetOneFire();
+//GoToFire(490,264);
