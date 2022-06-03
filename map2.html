@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <title>Map</title>
-    <link rel="stylesheet" href="map.css">
     <link rel="stylesheet" href="style.css">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
@@ -16,9 +15,27 @@
 </head>
 <body>
     <div id="map"></div>
-    <form id="add"></form>
-    <script src="map2.js"></script>
-    <script src="script.js"></script>
+    <script src="map.js"></script>
+
+    <div id="vehicle">
+        <ul>
+            <li onclick="CreateForm('add')">Add</li>
+            <li onclick="CreateForm('edit')">Edit</li>
+            <li onclick="CreateForm('del')">Del</li>
+        </ul>
+        <form id="add"></form>
+        <form id="edit"></form>
+        <form id="del">
+            <h1>Delete by id</h1>
+            <label>id</label>
+            <input type="text" name="id"/>
+            <input type="button" value="Del"/><br><br>
+            <h1>Delete All</h1>
+            <input type="button" value="DelAll"/>
+        </form>
+        <form id="edit"></form>
+    </div>
+
     <fieldset>
         <legend>Afficher/Cacher les feux</legend>
     
@@ -53,6 +70,6 @@
           </div>
         <script> box();</script>
     </fieldset>
-
+    <script src="script.js"></script>
 </body>
 </html> 

@@ -1,4 +1,3 @@
-
 var map = L.map('map',{
     center: [39.73, -104.99],
     zoom: 10,
@@ -14,6 +13,15 @@ var FireIcon = L.icon({
     iconSize : [40,60],
 })
 
+var VehicleIcon = L.icon({
+    iconUrl :  'camion.png',
+    iconSize : [70,60],
+})
+
+var VehicleIcon2 = L.icon({
+    iconUrl :  'camion2.png',
+    iconSize : [50,30],
+})
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -26,16 +34,14 @@ fetch(url+'/facility')
     .then (response =>  response.json())
     .then(reponse => {
     reponse.forEach(facility => {
-        var marker = L.marker([facility.lat, facility.lon],{icon: FacilityIcon}).addTo(map).bindPopup('Id = ' +facility.id +'<br>'+'Nom :' +facility.name).openPopup()
-     } )
-    
-    
+        var marker = L.marker([facility.lat, facility.lon],{icon: FacilityIcon}).addTo(map).bindPopup('Id = ' +facility.id +'<br>'+'Nom :' +facility.name)//.openPopup()
+     } )    
 });
+
 fetch(url+'/fire')
 .then (response =>  response.json())
 .then(reponse => {
-
-reponse.forEach(fire => {
+    reponse.forEach(fire => {
         tab(fire);
     })
 });
@@ -90,6 +96,7 @@ function box(){
     var bC_Flammable_Gases= true;
     var bD_Metals= true;
     var bE_Electric= true;
+
 
     A.onchange = function() {
         if (bA){
@@ -208,3 +215,148 @@ function coucheE_Electric(){
         if (fire.type == 'E_Electric'){
         var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lE_Electric).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range).openPopup()
     }})}
+
+
+fetch(url+'/vehicle')
+.then (response =>  response.json())
+.then(response => {   
+response.forEach(vehicle => {
+    tab_camion(vehicle);
+    })   
+});
+
+lleurs_camions = new L.layerGroup();
+lnos_camions =new  L.layerGroup();
+
+map.addLayer(lleurs_camions);
+map.addLayer(lnos_camions);
+
+let camions = [];
+
+function tab_camion(camion) {
+    camions.push(camion);
+    coucheNos_camions();
+    coucheLeurs_camions();
+    
+}
+
+
+
+function box_camion(){
+    var nos_camions = document.querySelector('input[value="nos_camions"]');
+    var leurs_camions = document.querySelector('input[value="B_Gasoline"]');
+
+    var bnos_camions = true;
+    var bleurs_camions= true;
+
+
+    nos_camions.onchange = function() {
+        if (bnos_camions){
+            lnos_camions.clearLayers();
+            bnos_camions = false;
+        }
+        else{
+            coucheNos_camions();
+            bnos_camions=true;
+        }
+        
+    }
+    leurs_camions.onchange = function(){
+        if (bleurs_camions){
+            lleurs_camions.clearLayers();
+            bleurs_camions = false;
+        }
+        else{
+            coucheLeurs_camions();
+            bleurs_camions=true;
+        }
+    }
+}
+    
+function coucheNos_camions(){
+    feu.forEach(camion =>{
+        if (camion.facilityRefID == 173){
+            var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+            var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(map).bindPopup(bindText)//.openPopup();
+    }
+    })}
+
+function coucheLeurs_camions(){
+    feu.forEach(camion =>{
+    if (camion.type != 173){
+        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(map).bindPopup(bindText)//.openPopup();
+    }
+})}
+    
+
+
+
+
+
+
+const data = {
+    "crewMember": 0,
+    "facilityRefID": 0,
+    "fuel": 0,
+    "id": 0,
+    "lat": 0,
+    "liquidQuantity": 0,
+    "liquidType": "ALL",
+    "lon": 0,
+    "type": "CAR"
+};
+
+function AddVehicle(form){
+
+    data.crewMember     =parseInt(form.crewMember.value);
+    data.facilityRefID  =parseInt(form.facilityRefID.value);
+    data.fuel           =parseInt(form.fuel.value);
+    data.id             =parseInt(form.id.value);
+    data.lat            =parseInt(form.id.value);
+    data.liquidQuantity =parseInt(form.liquidQuantity.value);
+    data.liquidType     =form.liquidType.value;
+    data.lon            =parseInt(form.lon.value);
+    data.type           =form.type.value;
+    console.log("vehicle to add :", data)
+    // verifier pas vide
+    ok = true;
+    Object.values(data).every(
+        element => {
+            if(element == "" || isNaN(element)){
+                alert("content empty"); 
+                ok = false;
+                return false;
+            }
+            return true;
+        } 
+    );
+    if(!ok){return;}
+
+    fetch (url+'/vehicle/'+teamuuid, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+          },
+        body: JSON.stringify(data),
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Added:', data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function  DelVehicle(){
+    fetch (url+'/vehicle/'+teamuuid, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+          },
+    })
+    .then (response => console.log('DeletedAll:', response.ok))
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}

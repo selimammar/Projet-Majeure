@@ -221,15 +221,81 @@ fetch(url+'/vehicle')
 .then (response =>  response.json())
 .then(response => {   
 response.forEach(vehicle => {
-    if (vehicle.facilityRefID == 173){
-        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
-        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(map).bindPopup(bindText)//.openPopup();
-    }
-    else {
-        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
-        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(map).bindPopup(bindText)//.openPopup();
-    }})   
+    tab_camion(vehicle);
+    })   
 });
+
+lleurs_camions = new L.layerGroup();
+lnos_camions =new  L.layerGroup();
+
+map.addLayer(lleurs_camions);
+map.addLayer(lnos_camions);
+
+let camions = [];
+
+function tab_camion(camion) {
+    camions.push(camion);
+    coucheNos_camions();
+    coucheLeurs_camions();
+    
+}
+
+
+
+function box_camion(){
+    var nos_camions = document.querySelector('input[value="nos_camions"]');
+    var leurs_camions = document.querySelector('input[value="leurs_camions"]');
+
+    var bnos_camions = true;
+    var bleurs_camions= true;
+
+
+    nos_camions.onchange = function() {
+        
+        if (bnos_camions){
+            lnos_camions.clearLayers();
+            bnos_camions = false;
+        }
+        else{
+            coucheNos_camions();
+            bnos_camions=true;
+        }
+        
+    }
+    leurs_camions.onchange = function(){
+        if (bleurs_camions){
+            
+            lleurs_camions.clearLayers();
+            bleurs_camions = false;
+        }
+        else{
+            coucheLeurs_camions();
+            bleurs_camions=true;
+        }
+    }
+}
+    
+function coucheNos_camions(){
+
+    camions.forEach(vehicle =>{
+        if (vehicle.facilityRefID == 173){
+            var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+            var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)//.openPopup();
+    }
+    })}
+
+function coucheLeurs_camions(){
+    camions.forEach(vehicle =>{
+    if (!(vehicle.facilityRefID == 173)){
+        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText)//.openPopup();
+    }
+})}
+    
+
+
+
+
 
 
 const data = {

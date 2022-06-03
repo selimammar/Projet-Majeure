@@ -89,3 +89,15 @@ form label, form input{
     border: 0;
     cursor: pointer;
 }
+
+#affichage_feu{
+    position: absolute;
+    right: 2%;
+    top: 65%;
+}
+#affichage_camion{
+    position: absolute;
+    right: 2%;
+    top: 90%;
+}
+

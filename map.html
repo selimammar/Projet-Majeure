@@ -36,8 +36,8 @@
         <form id="edit"></form>
     </div>
 
-    <fieldset>
-        <legend>Afficher/Cacher les feux</legend>
+    <fieldset id="affichage_feu">
+        <legend id="legende">Afficher/Cacher les feux</legend>
     
         <div>
           <input type="checkbox" id="A" name="type" value="A" checked>
@@ -70,6 +70,21 @@
           </div>
         <script> box();</script>
     </fieldset>
+
+    <fieldset id="affichage_camion">
+      <legend id="legende">Afficher/Cacher les camions</legend>
+  
+      <div>
+        <input type="checkbox" id="nos_camions" name="type" value="nos_camions" checked>
+        <label for="scales">Nos camions</label>
+      </div>
+  
+      <div>
+        <input type="checkbox" id="leurs_camions" name="type" value = "leurs_camions" checked>
+        <label for="horns">Leurs camions</label>
+      </div>
+      <script> box_camion();</script>
+  </fieldset>
     <script src="script.js"></script>
 </body>
 </html> 
