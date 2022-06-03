@@ -94,11 +94,17 @@ form label, form input{
 #affichage_feu{
     position: absolute;
     right: 2%;
-    top: 65%;
+    top: 60%;
 }
 #affichage_camion{
     position: absolute;
     right: 2%;
-    top: 90%;
+    top: 110%;
 }
 
+#affichage_caserne{
+    position: absolute;
+    right: 2%;
+    top: 121%;
+
+}
