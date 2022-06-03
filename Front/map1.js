@@ -30,7 +30,7 @@ async function GetOurVehicle(facilityID){
     });
 }
 
-var intervalTimer = setInterval(UpdateVehicles, 5000);
+var intervalTimer = setInterval(UpdateVehicles, 45000);
 UpdateVehicles();
 
 
