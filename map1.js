@@ -1,4 +1,7 @@
 
+var url = "http://vps.cpe-sn.fr:8081"
+var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
+var facilityID=173;
 
 const data = {
     "crewMember": 0,
@@ -11,6 +14,39 @@ const data = {
     "lon": 0,
     "type": "CAR"
 };
+
+// var ourVehicles=[];
+// GetOurVehicle(facilityID);
+// ourVehicles.forEach(element => {
+//     console.log("aaa",element);
+//     element.fireID = 0 
+// });
+// console.log("ourVehicles :",ourVehicles);
+
+
+async function GetOurVehicle(facilityID){
+    var allVehicle = await GetAllVehicle()
+    allVehicle.forEach(vehicle => {
+        if (vehicle.facilityRefID== 173){
+            ourVehicles.push(vehicle);
+        }
+    });
+    return ourVehicles;
+}
+
+
+async function UpdateVehicles(){
+    
+}
+
+async function GetAllVehicle(){
+    return fetch(url+'/vehicle')
+    .then (response =>  response.json())
+    .then(response => {   
+        return response;
+        })
+    .catch(error => console.error("Error :",error))
+}
 
 function AddVehicle(form){
 
@@ -118,7 +154,12 @@ function EditVehicle(form){
 async function GoToFire(fireID, vehicleID){
 
     var data = await GetVehicleByID(vehicleID);
-    var fireData = await GetLastFire(fireID);
+    var fireData = await GetFireByID(fireID);
+
+    if (typeof fireData === 'undefined'){ 
+        alert('fire is already extinct');
+        return; 
+    }
     
     console.log('fireData :',fireData);
     console.log('vehicle data :', data);
@@ -136,7 +177,7 @@ async function GoToFire(fireID, vehicleID){
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Vehicle : ', vehicleID, ', Went To Fire');
+        console.log('Vehicle : ', vehicleID, ', Went To Fire', fireID);
     })
     .catch(error => console.error('Error:', error));
 
@@ -153,7 +194,7 @@ async function GetVehicleByID(vehicleID){
     .catch(error => console.error('Error:', error));
 }
 
-async function GetLastFire(fireID){
+async function GetFireByID(fireID){
     return fetch (url+'/fire'+'/'+fireID)
     .then(response => response.json())
     .then(data => {
@@ -166,4 +207,11 @@ async function GetLastFire(fireID){
 
 //GetVehicleByID(264);
 //GetOneFire();
-//GoToFire(490,264);
+// GoToFire(759,174);
+// GoToFire(786,262);
+// GoToFire(697,263);
+// GoToFire(702,264);
+// GoToFire(795,841);
+// GoToFire(835,842);
+
+
