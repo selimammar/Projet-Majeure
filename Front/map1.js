@@ -30,7 +30,7 @@ async function GetOurVehicle(facilityID){
     });
 }
 
-var intervalTimer = setInterval(UpdateVehicles, 45000);
+var intervalTimer = setInterval(UpdateVehicles, 30000);
 UpdateVehicles();
 
 
@@ -226,29 +226,6 @@ async function GetFireByID(fireID){
     .catch(error => console.error('Error:', error));
 
 }
-
-//GetVehicleByID(502,264);
-//GetOneFire();
-// 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // GoToFire(702,264);
