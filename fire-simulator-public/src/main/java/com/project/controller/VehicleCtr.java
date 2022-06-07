@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,9 +27,14 @@ public class VehicleCtr{
 		return this.CRService.getVehicleByID(id);
 	}
 	
-//	@PostMapping("/vehicle/{teamuuid}")
-//	public VehicleDTO addVehicle(@PathVariable String teamuuid, @RequestBody VehicleDTO vehicle) {
-//		return this.CRService.addVehicle(teamuuid, vehicle);
-//	}
+	@PostMapping("/vehicle/{teamuuid}")
+	public VehicleDTO postVehicle(@PathVariable String teamuuid, @RequestBody VehicleDTO vehicle) {
+		return this.CRService.postVehicle(teamuuid, vehicle);
+	}
+	
+	@PutMapping("/vehicle/{teamuuid}/{id}")
+	public void putVehicle(@PathVariable String teamuuid, @RequestBody VehicleDTO vehicle) {
+		this.CRService.putVehicle(teamuuid, vehicle);
+	}
 	
 }
