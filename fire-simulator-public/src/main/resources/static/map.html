@@ -79,12 +79,12 @@
     <div class="slidecontainer">
       <input type="range" min="1" max="60" value="Etendue" class="slider" id="myRange" />
       <p>Valeur d'étendue max: <span id="val_eten"></span></p>
-      <input type="submit" value="filtre" onclick="filtre_feu()"/>
+      <input type="submit" value="Filtrer" onclick="filtre_feu()"/>
     </div>
   </fieldset>
 
   <fieldset id="affichage_caserne">
-    <legend id="legende">Afficher/Cacher les casernes</legend>
+    <legend id="legende">Filtrer les casernes</legend>
 
     <div>
       <input type="checkbox" id="notre_caserne" name="type" value="notre_caserne" checked>
@@ -106,20 +106,38 @@
 
 
 
-  <fieldset id="affichage_camion">
-    <legend id="legende">Afficher/Cacher les camions</legend>
-
-    <div>
-      <input type="checkbox" id="nos_camions" name="type" value="nos_camions" checked>
-      <label for="scales">Nos camions</label>
-    </div>
-
-    <div>
-      <input type="checkbox" id="leurs_camions" name="type" value = "leurs_camions" checked>
-      <label for="horns">Leurs camions</label>
-    </div>
-    <script> box_camion();</script>
-</fieldset>
+<fieldset id="affichage_camion">
+  <legend id="legende">Filtrer les camions</legend>
+  
+  <div>
+  <input type="checkbox" id="nos_camions" name="type" value="nos_camions" checked>
+  <label for="scales">Nos camions</label>
+  </div>
+  
+  <div>
+  <input type="checkbox" id="leurs_camions" name="type" value = "leurs_camions" checked>
+  <label for="horns">Leurs camions</label>
+  </div>
+  <br>
+  <div class="slidecontainer">
+  <input type="range" min="1" max="50" value="nb_equipier" class="slider" id="nb_equipier" />
+  <p>Valeur d'equipage max: <span id="equipier"></span></p>
+  <input type="submit" value="Filtrer" onclick="filtre_camion()"/>
+  </div>
+  <script>
+  
+  var nb_equipier = document.getElementById("equipier");
+  var sliderE = document.getElementById("nb_equipier");
+  nb_equipier.innerHTML = sliderE.value 
+  sliderE.oninput = function() {
+  nb_equipier.innerHTML = this.value;
+  }
+ 
+ 
+  </script>
+ 
+  </fieldset>
+ 
 
 
 
