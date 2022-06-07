@@ -4,42 +4,63 @@ var map = L.map('map',{
 }).setView([45.732333858926715, 4.8260937761478795], 12);
 
 var FacilityIcon = L.icon({
-    iconUrl :  'caserne.png',
+    iconUrl :  'images/caserne.png',
     iconSize : [50,50],
 })
 
 var FireIcon = L.icon({
-    iconUrl :  'feu.png',
+    iconUrl :  'images/feu.png',
     iconSize : [40,60],
 })
 
 var VehicleIcon = L.icon({
-    iconUrl :  'camion.png',
+    iconUrl :  'images/camion.png',
     iconSize : [70,60],
 })
 
 var VehicleIcon2 = L.icon({
-    iconUrl :  'camion2.png',
+    iconUrl :  'images/camion2.png',
     iconSize : [50,30],
 })
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-}).addTo(map);http://vps.cpe-sn.fr:8081/facility
 
 var url = "http://vps.cpe-sn.fr:8081"
 var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
 
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-fetch(url+'/fire')
-.then (response =>  response.json())
-.then(reponse => {
-    reponse.forEach(fire => {
-        tab(fire);
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
-    })
-});
+function initMap (){
+
+    fetch(url+'/fire')
+    .then (response =>  response.json())
+    .then(reponse => {
+        reponse.forEach(fire => {
+            tab(fire);
+            var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
+        })
+    });
+
+    fetch(url+'/vehicle')
+    .then (response =>  response.json())
+    .then(response => {   
+    response.forEach(vehicle => {
+        tab_camion(vehicle);
+        })   
+    });
+
+    fetch(url+'/facility')
+    .then (response =>  response.json())
+    .then(response => {   
+    response.forEach(facility => {
+        tab_caserne(facility);
+        })   
+    });
+    setTimeout(initMap, 5000);
+}
+initMap();
+
 
 let feu = [];
 
@@ -55,8 +76,7 @@ function filtre_feu(){
     var etendue = document.getElementById("val_eten");
     var intensite = document.getElementById("val_int");
     var sliderE = document.getElementById("myRange");
-    var sliderI = document.getElementById("myRangeI")
-    ;
+    var sliderI = document.getElementById("myRangeI");
     var A = document.querySelector('input[value="A"]');
     var B_Gasoline = document.querySelector('input[value="B_Gasoline"]');
     var B_Alcohol = document.querySelector('input[value="B_Alcohol"]');
@@ -83,16 +103,6 @@ function filtre_feu(){
             (document.getElementById("E_Electric").checked == true && fire.type == 'E_Electric' )){
                 var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
 }}}})}
-
-
-
-fetch(url+'/vehicle')
-.then (response =>  response.json())
-.then(response => {   
-response.forEach(vehicle => {
-    tab_camion(vehicle);
-    })   
-});
 
 
 lleurs_camions = new L.layerGroup();
