@@ -1,3 +1,9 @@
+var urlSimul = "http://vps.cpe-sn.fr:8081";
+
+var url = "http://vps.cpe-sn.fr:8081";
+var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
+
+
 var map = L.map('map',{
     center: [39.73, -104.99],
     zoom: 10,
@@ -15,7 +21,7 @@ var FireIcon = L.icon({
 
 var VehicleIcon = L.icon({
     iconUrl :  'images/camion.png',
-    iconSize : [70,60],
+    iconSize : [55,35],
 })
 
 var VehicleIcon2 = L.icon({
@@ -23,74 +29,100 @@ var VehicleIcon2 = L.icon({
     iconSize : [50,30],
 })
 
-var url = "http://vps.cpe-sn.fr:8081"
-var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap'
     }).addTo(map);
 
-function initMap (){
 
+
+var feu = [];
+var camions = [];
+var casernes = [];
+
+var lfeu = new L.layerGroup();
+var lleurs_camions = new L.layerGroup();
+var lnos_camions =new  L.layerGroup();
+var lleurs_camions = new L.layerGroup();
+var lnotre_caserne =new  L.layerGroup();
+var lleurs_casernes = new L.layerGroup();
+
+map.addLayer(lfeu);
+map.addLayer(lleurs_camions);
+map.addLayer(lnos_camions);
+map.addLayer(lnotre_caserne);
+map.addLayer(lleurs_casernes);
+
+
+
+function initMap (){
+    feu = [];
+    camions = [];
+    casernes = [];
+
+    lfeu.clearLayers();
+    lleurs_camions.clearLayers();
+    lnos_camions.clearLayers();
+    lleurs_camions.clearLayers();
+    lnotre_caserne.clearLayers();
+    lleurs_casernes.clearLayers();
+
+    
     fetch(url+'/fire')
     .then (response =>  response.json())
     .then(reponse => {
         reponse.forEach(fire => {
-            tab(fire);
-            var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
+            feu.push(fire);
+            
+            // var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range);
         })
+        filtre_feu();
     });
 
+
     fetch(url+'/vehicle')
-    .then (response =>  response.json())
-    .then(response => {   
-    response.forEach(vehicle => {
-        tab_camion(vehicle);
-        })   
+    .then (response => response.json())
+    .then(response => { 
+        response.forEach(vehicle => {
+            camions.push(vehicle);
+        })
+        filtre_camion();
     });
+
 
     fetch(url+'/facility')
     .then (response =>  response.json())
     .then(response => {   
     response.forEach(facility => {
-        tab_caserne(facility);
-        })   
+        casernes.push(facility);
+        coucheNotre_caserne();
+        coucheLeurs_casernes();
+        })
+        box_caserne();   
     });
-    setTimeout(initMap, 5000);
+
+    
+
+
+    
 }
-initMap();
+setInterval(()=>{initMap()}, 2000);
+//initMap();
 
 
-let feu = [];
-
-function tab(fire) {
-    feu.push(fire);
-}
-
-
-var lfeu = new L.layerGroup();
-map.addLayer(lfeu);
 
 function filtre_feu(){
     var etendue = document.getElementById("val_eten");
     var intensite = document.getElementById("val_int");
     var sliderE = document.getElementById("myRange");
     var sliderI = document.getElementById("myRangeI");
-    var A = document.querySelector('input[value="A"]');
-    var B_Gasoline = document.querySelector('input[value="B_Gasoline"]');
-    var B_Alcohol = document.querySelector('input[value="B_Alcohol"]');
-    var B_Plastics = document.querySelector('input[value="B_Plastics"]');
-    var C_Flammable_Gases = document.querySelector('input[value="C_Flammable_Gases"]');
-    var D_Metals = document.querySelector('input[value="D_Metals"]');
-    var E_Electric = document.querySelector('input[value="E_Electric"]')
 
     etendue.innerHTML = sliderE.value;
     intensite.innerHTML = sliderI.value;    
 
-
-
     lfeu.clearLayers();
+
     feu.forEach(fire =>{
     if (fire.intensity <= sliderI.value ){
         if ( fire.range <= sliderE.value){
@@ -101,47 +133,8 @@ function filtre_feu(){
             (document.getElementById("C_Flammable_Gases").checked == true && fire.type == 'C_Flammable_Gases' )||
             (document.getElementById("D_Metals").checked == true && fire.type == 'D_Metals' )||
             (document.getElementById("E_Electric").checked == true && fire.type == 'E_Electric' )){
-                var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
+                L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
 }}}})}
-
-
-<<<<<<< HEAD:fire-simulator-public/src/main/resources/static/js/map.js
-lleurs_camions = new L.layerGroup();
-lnos_camions =new  L.layerGroup();
-
-map.addLayer(lleurs_camions);
-map.addLayer(lnos_camions);
-=======
-
-fetch(url+'/vehicle')
-.then (response => response.json())
-.then(response => { 
-response.forEach(vehicle => {
- tab_camion(vehicle);
- if (vehicle.facilityRefID == 173){
- var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
- var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)
- }
- else {
- var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
- var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText)
-
- }
- } 
-)});
->>>>>>> 0b0587daa1a1472402d2662145f761467d41c17e:Front/map.js
-
-let camions = [];
-
-function tab_camion(camion) {
- camions.push(camion); 
-}
-
-lnos_camions = new L.layerGroup();
-lleurs_camions = new L.layerGroup();
-
-map.addLayer(lnos_camions);
-map.addLayer(lleurs_camions);
 
 
 
@@ -157,12 +150,10 @@ function filtre_camion(){
  lleurs_camions.clearLayers();
  camions.forEach(camion =>{
  if (camion.crewMember <= sliderE.value ){
- console.log('aa')
  if (document.getElementById("nos_camions").checked == true && camion.facilityRefID == 173 ){
  var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +camion.crewMember+'<br>'+ ' Type de liquide : ' +camion.liquidType+'<br>'+'Quantité de liquide : ' + camion.liquidQuantity;
  var marker = L.marker([camion.lat, camion.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)
  }
- console.log('a')
  if(document.getElementById("leurs_camions").checked == true && !(camion.facilityRefID == 173)){
  var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +camion.crewMember+'<br>'+ ' Type de liquide : ' +camion.liquidType+'<br>'+'Quantité de liquide : ' + camion.liquidQuantity;
  var marker = L.marker([camion.lat, camion.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText) 
@@ -175,61 +166,16 @@ function filtre_camion(){
 })}
 
 
-
-fetch(url+'/facility')
-.then (response =>  response.json())
-.then(response => {   
-response.forEach(facility => {
-    tab_caserne(facility);
-    })   
-});
-
-
-lleurs_casernes = new L.layerGroup();
-lnotre_caserne =new  L.layerGroup();
-
-map.addLayer(lnotre_caserne);
-map.addLayer(lleurs_casernes);
-
-let casernes = [];
-
-function tab_caserne(caserne) {
-    casernes.push(caserne);
-    coucheNotre_caserne();
-    coucheLeurs_casernes();
-    
-}
-
 function box_caserne(){
-    var notre_caserne = document.querySelector('input[value="notre_caserne"]');
-    var leurs_casernes = document.querySelector('input[value="leurs_casernes"]');
-
-    var bnotre_caserne = true;
-    var bleurs_casernes= true;
-
-
-    notre_caserne.onchange = function() {
+    var bnotre_caserne = document.querySelector('input[value="notre_caserne"]').checked;
+    var bleurs_casernes = document.querySelector('input[value="leurs_casernes"]').checked;
         
-        if (bnotre_caserne){
-            lnotre_caserne.clearLayers();
-            bnotre_caserne = false;
-        }
-        else{
-            coucheNotre_caserne();
-            bnotre_caserne=true;
-        }
-    }
+    if (!bnotre_caserne){lnotre_caserne.clearLayers();}
+    else{coucheNotre_caserne();}
 
-    leurs_casernes.onchange = function(){
-        if (bleurs_casernes){
-            lleurs_casernes.clearLayers();
-            bleurs_casernes = false;
-        }
-        else{
-            coucheLeurs_casernes();
-            bleurs_casernes=true;
-        }
-    }
+    if (!bleurs_casernes){lleurs_casernes.clearLayers();}
+    else{coucheLeurs_casernes();}
+
 }
 
 
