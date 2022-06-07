@@ -15,13 +15,9 @@
 </head>
 <body>
     <div id="map"></div>
-<<<<<<< HEAD:fire-simulator-public/src/main/resources/static/map.html
-    <script src="js/map.js"></script>
+    
     <!-- <script src="js/map1.js"></script> -->
-=======
-    <script src="map.js"></script>
-    <!-- <script src="map1.js"></script> -->
->>>>>>> cffa55e65f83363374c17266a8e1a9a0798c5927:Front/map.html
+
 
     <div id="vehicle">
         <ul>
@@ -84,7 +80,7 @@
     <div class="slidecontainer">
       <input type="range" min="1" max="60" value="Etendue" class="slider" id="myRange" />
       <p>Valeur d'étendue max: <span id="val_eten"></span></p>
-      <input type="submit" value="Filtrer" onclick="filtre_feu()"/>
+      <!-- <input type="submit" value="Filtrer" onclick="filtre_feu()"/> -->
     </div>
   </fieldset>
 
@@ -100,7 +96,6 @@
       <input type="checkbox" id="leurs_casernes" name="type" value = "leurs_casernes" checked>
       <label for="horns">Leurs casernes</label>
     </div>
-    <script> box_caserne();</script>
 </fieldset>
 
 
@@ -127,7 +122,7 @@
   <div class="slidecontainer">
   <input type="range" min="1" max="50" value="nb_equipier" class="slider" id="nb_equipier" />
   <p>Valeur d'equipage max: <span id="equipier"></span></p>
-  <input type="submit" value="Filtrer" onclick="filtre_camion()"/>
+  <!-- <input type="submit" value="Filtrer" onclick="filtre_camion()"/> -->
   </div>
   <script>
   
@@ -168,6 +163,7 @@ var output = document.getElementById("val_int");
 
 
 </script>
+    <script src="js/map.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html> 
