@@ -4,42 +4,63 @@ var map = L.map('map',{
 }).setView([45.732333858926715, 4.8260937761478795], 12);
 
 var FacilityIcon = L.icon({
-    iconUrl :  'caserne.png',
+    iconUrl :  'images/caserne.png',
     iconSize : [50,50],
 })
 
 var FireIcon = L.icon({
-    iconUrl :  'feu.png',
+    iconUrl :  'images/feu.png',
     iconSize : [40,60],
 })
 
 var VehicleIcon = L.icon({
-    iconUrl :  'camion.png',
+    iconUrl :  'images/camion.png',
     iconSize : [70,60],
 })
 
 var VehicleIcon2 = L.icon({
-    iconUrl :  'camion2.png',
+    iconUrl :  'images/camion2.png',
     iconSize : [50,30],
 })
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-}).addTo(map);http://vps.cpe-sn.fr:8081/facility
 
 var url = "http://vps.cpe-sn.fr:8081"
 var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
 
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-fetch(url+'/fire')
-.then (response =>  response.json())
-.then(reponse => {
-    reponse.forEach(fire => {
-        tab(fire);
-        var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
-    })
-});
+function initMap (){
+
+    fetch(url+'/fire')
+    .then (response =>  response.json())
+    .then(reponse => {
+        reponse.forEach(fire => {
+            tab(fire);
+            var marker = L.marker([fire.lat, fire.lon],{icon : FireIcon}).addTo(lfeu).bindPopup('Type = ' +fire.type +'<br>'+'Intensite :' +fire.intensity+'<br>'+'Etendue :' +fire.range)
+        })
+    });
+
+    fetch(url+'/vehicle')
+    .then (response =>  response.json())
+    .then(response => {   
+    response.forEach(vehicle => {
+        tab_camion(vehicle);
+        })   
+    });
+
+    fetch(url+'/facility')
+    .then (response =>  response.json())
+    .then(response => {   
+    response.forEach(facility => {
+        tab_caserne(facility);
+        })   
+    });
+    setTimeout(initMap, 5000);
+}
+initMap();
+
 
 let feu = [];
 
@@ -48,15 +69,14 @@ function tab(fire) {
 }
 
 
-lfeu = new L.layerGroup();
+var lfeu = new L.layerGroup();
 map.addLayer(lfeu);
 
 function filtre_feu(){
     var etendue = document.getElementById("val_eten");
     var intensite = document.getElementById("val_int");
     var sliderE = document.getElementById("myRange");
-    var sliderI = document.getElementById("myRangeI")
-    ;
+    var sliderI = document.getElementById("myRangeI");
     var A = document.querySelector('input[value="A"]');
     var B_Gasoline = document.querySelector('input[value="B_Gasoline"]');
     var B_Alcohol = document.querySelector('input[value="B_Alcohol"]');
@@ -85,83 +105,74 @@ function filtre_feu(){
 }}}})}
 
 
-
-fetch(url+'/vehicle')
-.then (response =>  response.json())
-.then(response => {   
-response.forEach(vehicle => {
-    tab_camion(vehicle);
-    })   
-});
-
-
+<<<<<<< HEAD:fire-simulator-public/src/main/resources/static/js/map.js
 lleurs_camions = new L.layerGroup();
 lnos_camions =new  L.layerGroup();
 
 map.addLayer(lleurs_camions);
 map.addLayer(lnos_camions);
+=======
+
+fetch(url+'/vehicle')
+.then (response => response.json())
+.then(response => { 
+response.forEach(vehicle => {
+ tab_camion(vehicle);
+ if (vehicle.facilityRefID == 173){
+ var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+ var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)
+ }
+ else {
+ var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
+ var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText)
+
+ }
+ } 
+)});
+>>>>>>> 0b0587daa1a1472402d2662145f761467d41c17e:Front/map.js
 
 let camions = [];
 
 function tab_camion(camion) {
-    camions.push(camion);
-    coucheNos_camions();
-    coucheLeurs_camions();
-    
+ camions.push(camion); 
 }
 
-function box_camion(){
-    var nos_camions = document.querySelector('input[value="nos_camions"]');
-    var leurs_camions = document.querySelector('input[value="leurs_camions"]');
+lnos_camions = new L.layerGroup();
+lleurs_camions = new L.layerGroup();
 
-    var bnos_camions = true;
-    var bleurs_camions= true;
-
-
-    nos_camions.onchange = function() {
-        
-        if (bnos_camions){
-            lnos_camions.clearLayers();
-            bnos_camions = false;
-        }
-        else{
-            coucheNos_camions();
-            bnos_camions=true;
-        }
-        
-    }
-    leurs_camions.onchange = function(){
-        if (bleurs_camions){
-            
-            lleurs_camions.clearLayers();
-            bleurs_camions = false;
-        }
-        else{
-            coucheLeurs_camions();
-            bleurs_camions=true;
-        }
-    }
-}
+map.addLayer(lnos_camions);
+map.addLayer(lleurs_camions);
 
 
-    
-function coucheNos_camions(){
 
-    camions.forEach(vehicle =>{
-        if (vehicle.facilityRefID == 173){
-            var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
-            var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)//.openPopup();
-    }
-    })}
+function filtre_camion(){
+ var nb_equipier = document.getElementById("equipier");
+ var sliderE = document.getElementById("nb_equipier");
+ var nos_camions = document.querySelector('input[value="nos_camions"]');
+ var leurs_camions = document.querySelector('input[value="leurs_camions"]');
 
-function coucheLeurs_camions(){
-    camions.forEach(vehicle =>{
-    if (!(vehicle.facilityRefID == 173)){
-        var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +vehicle.crewMember+'<br>'+ ' Type de liquide : ' +vehicle.liquidType+'<br>'+'Quantité de liquide : ' + vehicle.liquidQuantity;
-        var marker = L.marker([vehicle.lat, vehicle.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText)//.openPopup();
-    }
+ nb_equipier.innerHTML = sliderE.value 
+
+ lnos_camions.clearLayers();
+ lleurs_camions.clearLayers();
+ camions.forEach(camion =>{
+ if (camion.crewMember <= sliderE.value ){
+ console.log('aa')
+ if (document.getElementById("nos_camions").checked == true && camion.facilityRefID == 173 ){
+ var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +camion.crewMember+'<br>'+ ' Type de liquide : ' +camion.liquidType+'<br>'+'Quantité de liquide : ' + camion.liquidQuantity;
+ var marker = L.marker([camion.lat, camion.lon],{icon : VehicleIcon}).addTo(lnos_camions).bindPopup(bindText)
+ }
+ console.log('a')
+ if(document.getElementById("leurs_camions").checked == true && !(camion.facilityRefID == 173)){
+ var bindText = 'Type = ' +vehicle.type +'<br>'+'Nombre équipiers :' +camion.crewMember+'<br>'+ ' Type de liquide : ' +camion.liquidType+'<br>'+'Quantité de liquide : ' + camion.liquidQuantity;
+ var marker = L.marker([camion.lat, camion.lon],{icon : VehicleIcon2}).addTo(lleurs_camions).bindPopup(bindText) 
+ 
+
+ }
+ }
+
+ 
 })}
-    
 
 
 
@@ -207,7 +218,6 @@ function box_caserne(){
             coucheNotre_caserne();
             bnotre_caserne=true;
         }
-        
     }
 
     leurs_casernes.onchange = function(){
