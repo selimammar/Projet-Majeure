@@ -48,7 +48,7 @@ function tab(fire) {
 }
 
 
-lfeu = new L.layerGroup();
+var lfeu = new L.layerGroup();
 map.addLayer(lfeu);
 
 function filtre_feu(){
@@ -190,7 +190,6 @@ function box_caserne(){
             coucheNotre_caserne();
             bnotre_caserne=true;
         }
-        
     }
 
     leurs_casernes.onchange = function(){
