@@ -26,9 +26,9 @@ public class VehicleCtr{
 		return this.CRService.getVehicleByID(id);
 	}
 	
-	@PostMapping("/vehicle/{teamuuid}")
-	public VehicleDTO addVehicle(@PathVariable int teamuuid, @RequestBody VehicleDTO vehicle) {
-		return this.CRService.addVehicle(teamuuid, vehicle);
-	}
+	// @PostMapping("/vehicle/{teamuuid}")
+	// public VehicleDTO addVehicle(@PathVariable int teamuuid, @RequestBody VehicleDTO vehicle) {
+	// 	return this.CRService.addVehicle(teamuuid, vehicle);
+	// }
 	
 }

@@ -24,9 +24,9 @@ public class ClientRestService {
         return this.restTemplate.getForObject(url, VehicleDTO[].class);
     }
     
-    public VehicleDTO addVehicle(int teamuuid, VehicleDTO vehicle) {
+    // public VehicleDTO addVehicle(int teamuuid, VehicleDTO vehicle) {
 		
     	
-    }
+    // }
 
 }
