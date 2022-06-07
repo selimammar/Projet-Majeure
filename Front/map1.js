@@ -15,9 +15,9 @@ const data = {
     "type": "CAR"
 };
 
-var ourVehicles=[];
-GetOurVehicle(facilityID);
-console.log("ourVehicles :",ourVehicles);
+// var ourVehicles=[];
+// GetOurVehicle(facilityID);
+// console.log("ourVehicles :",ourVehicles);
 
 
 async function GetOurVehicle(facilityID){
@@ -30,8 +30,8 @@ async function GetOurVehicle(facilityID){
     });
 }
 
-var intervalTimer = setInterval(UpdateVehicles, 30000);
-UpdateVehicles();
+// var intervalTimer = setInterval(UpdateVehicles, 30000);
+// UpdateVehicles();
 
 
 async function UpdateVehicles(){
