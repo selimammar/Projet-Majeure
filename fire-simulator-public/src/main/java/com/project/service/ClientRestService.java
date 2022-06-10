@@ -18,7 +18,7 @@ import com.project.model.dto.VehicleDTO;
 
 @Service
 public class ClientRestService {
-	String url = "http://vps.cpe-sn.fr:8081/vehicle";
+	String url_vehicle = "http://vps.cpe-sn.fr:8081/vehicle";
 	String url_fire = "http://vps.cpe-sn.fr:8081/fire";
 	
     private final RestTemplate restTemplate;
@@ -28,11 +28,11 @@ public class ClientRestService {
     }
 
     public VehicleDTO getVehicleByID(int id) {
-        return this.restTemplate.getForObject(url+"/"+id, VehicleDTO.class);
+        return this.restTemplate.getForObject(url_vehicle+"/"+id, VehicleDTO.class);
     }
     
     public VehicleDTO[] getAllVehicles() {
-        return this.restTemplate.getForObject(url, VehicleDTO[].class);
+        return this.restTemplate.getForObject(url_vehicle, VehicleDTO[].class);
     }
     
     public FireDto[] getAllFire() {
@@ -62,14 +62,10 @@ public VehicleDTO postVehicle(String teamuuid, VehicleDTO vehicleDTO) {
     	HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
     	headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-    	//ObjectMapper oMapper = new ObjectMapper();
-    	//Map<String, Object> map = oMapper.convertValue(vehicleDTO, Map.class);
     	
     	HttpEntity<VehicleDTO> entity = new HttpEntity<>(vehicleDTO, headers);
-    	
     	// send POST request
-    	ResponseEntity<VehicleDTO> response = restTemplate.postForEntity(url+'/'+teamuuid, entity, VehicleDTO.class);
-
+    	ResponseEntity<VehicleDTO> response = restTemplate.postForEntity(url_vehicle+'/'+teamuuid, entity, VehicleDTO.class);
 //    	// check response
     	if (response.getStatusCode() == HttpStatus.CREATED) {
     	    System.out.println("Request Successful");
@@ -79,25 +75,24 @@ public VehicleDTO postVehicle(String teamuuid, VehicleDTO vehicleDTO) {
     	    System.out.println("Request Failed");
     	    System.out.println(response.getStatusCode());
     	    return null;
-    	}
-
-    	
+    	}    	
     }
     
     public void putVehicle(String teamuuid, VehicleDTO vehicleDTO) {
-    	
     	HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
     	headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-    	
     	HttpEntity<VehicleDTO> entity = new HttpEntity<>(vehicleDTO, headers);
-    	
     	// send POST request
-    	this.restTemplate.put(url+'/'+teamuuid+'/'+vehicleDTO.getId(), entity);
-    	
+    	this.restTemplate.put(url_vehicle+'/'+teamuuid+'/'+vehicleDTO.getId(), entity);  	
     }
     
+	public void delAllVehicles(String teamuuid) {
+		this.restTemplate.delete(url_vehicle+'/'+teamuuid);
+	}
 
+	public void delVehicle(String teamuuid, int id) {
+		this.restTemplate.delete(url_vehicle+'/'+teamuuid+'/'+id);
+	}
 }
 
