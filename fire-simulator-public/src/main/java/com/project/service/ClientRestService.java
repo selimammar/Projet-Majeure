@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.project.model.dto.FacilityDto;
 import com.project.model.dto.FireDto;
 import com.project.model.dto.VehicleDTO;
 
@@ -20,6 +21,7 @@ import com.project.model.dto.VehicleDTO;
 public class ClientRestService {
 	String url_vehicle = "http://vps.cpe-sn.fr:8081/vehicle";
 	String url_fire = "http://vps.cpe-sn.fr:8081/fire";
+	String url_facility = "http://vps.cpe-sn.fr:8081/facility";
 	
     private final RestTemplate restTemplate;
 
@@ -94,5 +96,19 @@ public VehicleDTO postVehicle(String teamuuid, VehicleDTO vehicleDTO) {
 	public void delVehicle(String teamuuid, int id) {
 		this.restTemplate.delete(url_vehicle+'/'+teamuuid+'/'+id);
 	}
+
+	public FireDto getFireByID(int id) {
+		return this.restTemplate.getForObject(url_fire+"/"+id, FireDto.class);
+	}
+
+	public FacilityDto[] getAllFacility() {
+		return this.restTemplate.getForObject(url_facility, FacilityDto[].class);
+	}
+
+	public FacilityDto getFacilityByID(int id) {
+		// TODO Auto-generated method stub
+		return this.restTemplate.getForObject(url_facility+"/"+id, FacilityDto.class);
+	}
+	
 }
 
