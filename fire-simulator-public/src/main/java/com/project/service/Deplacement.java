@@ -1,6 +1,7 @@
 package com.project.service;
 
 import java.util.ArrayList;
+import com.project.service.FireService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +31,13 @@ public class Deplacement implements Runnable {
 		this.fire = assignation();
 		while (!this.isEnd) {
 			try {
-				Thread.sleep(1000);
 				while(!aLaMaison) {
+					Thread.sleep(1000);
 					retour();
 					while(enMission) {
+						Thread.sleep(1000);
 						mouvement();
-						// System.out.println(vehicle.getLat()+"   " +vehicle.getLon());
+						 //System.out.println(vehicle.getLat()+"   " +vehicle.getLon());
 					}
 				}
 			}
@@ -48,27 +50,32 @@ public class Deplacement implements Runnable {
 	}
 
 	public void mouvement() {
-		double d =  Math.sqrt((vehicle.getLat()-fire.getLat())*(vehicle.getLat()-fire.getLat())+(vehicle.getLon()-fire.getLon())*(vehicle.getLon()-fire.getLon()));
-		double x =  (vehicle.getLat()+(fire.getLat()-vehicle.getLat()/d));
-		double y = (vehicle.getLon()+(fire.getLon()-vehicle.getLon()/d));
-		vehicle.setLat(x);
-		vehicle.setLon(y);
-		client.putVehicle(teamuuid, vehicle);
-		if (this.fire.getRange()==0) {
+		if (isFire()) {
+			double d =  Math.sqrt((vehicle.getLat()-fire.getLat())*(vehicle.getLat()-fire.getLat())+(vehicle.getLon()-fire.getLon())*(vehicle.getLon()-fire.getLon()));
+			//System.out.println(d);
+			double x =  (vehicle.getLat()+(fire.getLat()-vehicle.getLat())/(d*250));
+			double y = (vehicle.getLon()+(fire.getLon()-vehicle.getLon())/(d*250));
+			vehicle.setLat(x);
+			vehicle.setLon(y);
+			client.putVehicle(teamuuid, vehicle);
+		}
+		else {
 			this.enMission=false;
 		}
-		// c'est les nouvelles coordonnes pas un delta a ajoutter
 	}
+		
 	
 	public void retour() {
 		double d = Math.sqrt((vehicle.getLat()-lat_m)*(vehicle.getLat()-lat_m)+(vehicle.getLon()-lon_m)*(vehicle.getLon()-lon_m));
-		double x = (vehicle.getLat()+(lat_m-vehicle.getLat()/d));
-		double y = (vehicle.getLon()+(lon_m-vehicle.getLon()/d));
+		double x = (vehicle.getLat()+(lat_m-vehicle.getLat())/(d*250));
+		double y = (vehicle.getLon()+(lon_m-vehicle.getLon())/(d*250));
 		vehicle.setLat(x);
 		vehicle.setLon(y);
 		client.putVehicle(teamuuid, vehicle);
 		if (d<1) {
 			this.aLaMaison=true;
+			FireService.lmission.put(vehicle, 0);
+			stop();
 		}
 		
 	}
@@ -82,20 +89,21 @@ public class Deplacement implements Runnable {
 		FireDto[] fire1 = client.getAllFire();
 		ArrayList<FireDto> lfire= (ArrayList<FireDto>) client.toList(fire1);
 		Map<FireDto,Integer> lmoyenne = new HashMap<FireDto,Integer>();//init map de moyenne
-		
+	
 		for (int i=0; i<lfire.size(); i++){//parcourir les feux
-			if (checkFire(lfire.get(i))){//if checkFire(idFire)
-				int moyenne = (distance(lfire,lfire.get(i))+agent(vehicle,lfire.get(i))+personne()+capacite()+consommation())/5;//moyenne distance(vehicle, fire) & agent(vehicle, fire) & personne(vehicle)
+			if (checkFire(lfire.get(i))){
+				int moyenne = (distance(lfire,lfire.get(i))+agent(vehicle,lfire.get(i))+personne()+capacite()+consommation())/5;
+
 				if (moyenne>15) {
-					lmoyenne.put(lfire.get(i), moyenne);//ajout dans la liste de moyennes
+					lmoyenne.put(lfire.get(i), moyenne);
 				}
 			}
 		}
 					
-				
+			
 		FireDto ff = null;
 		try {
-			int maxValueInMap = (Collections.max(lmoyenne.values()));//recuperation de la plus grande moyenne
+			int maxValueInMap = (Collections.max(lmoyenne.values()));
 			for(Entry<FireDto, Integer> entry : lmoyenne.entrySet()) {
 				if (entry.getValue()==maxValueInMap) {
 					ff = entry.getKey();
@@ -118,7 +126,7 @@ public class Deplacement implements Runnable {
 		for (int j=0; j<lvehicle.size(); j++){//parcourir les vehicle
 			VehicleDTO camion = lvehicle.get(j);
 			int d = (int) Math.sqrt((camion.getLat()-fire1.getLat())*(camion.getLat()-fire1.getLat())+(camion.getLon()-fire1.getLon())*(camion.getLon()-fire1.getLon()));
-			if (d< 50) { 
+			if (d< 1) { 
 				compteur+=1;
 			}
 		}
@@ -129,15 +137,16 @@ public class Deplacement implements Runnable {
 	}
 	
 	private Integer distance(ArrayList<FireDto> lfire,FireDto fire3) {
-		int distancemax = 0;
+		double distancemax = 0;
 		for (int j=0; j<lfire.size(); j++){//parcourir les fire
 			FireDto fire2 = lfire.get(j);
-			int d = (int) Math.sqrt((vehicle.getLat()-fire2.getLat())*(vehicle.getLat()-fire2.getLat())+(vehicle.getLon()-fire2.getLon())*(vehicle.getLon()-fire2.getLon()));
+			double d = Math.sqrt((vehicle.getLat()-fire2.getLat())*(vehicle.getLat()-fire2.getLat())+(vehicle.getLon()-fire2.getLon())*(vehicle.getLon()-fire2.getLon()));
 			if(d>distancemax) {
 				distancemax=d;
 			}
+			
 		}
-		return (int) (1-(Math.sqrt((vehicle.getLat()-fire3.getLat())*(vehicle.getLat()-fire3.getLat())+(vehicle.getLon()-fire3.getLon())*(vehicle.getLon()-fire3.getLon()))/distancemax)*100);
+		return (int) ((Math.sqrt((vehicle.getLat()-fire3.getLat())*(vehicle.getLat()-fire3.getLat())+(vehicle.getLon()-fire3.getLon())*(vehicle.getLon()-fire3.getLon()))/distancemax)*100);
 	}
 	
 	private Integer agent(VehicleDTO vehicle, FireDto fire) {
@@ -154,6 +163,18 @@ public class Deplacement implements Runnable {
 	
 	private Integer consommation() {
 		return 100;
+	}
+	
+	private boolean isFire () {
+		boolean ret = false;
+		FireDto[] fire1 = client.getAllFire();
+		ArrayList<FireDto> lfire= (ArrayList<FireDto>) client.toList(fire1);
+		for (int i=0; i<lfire.size(); i++){//parcourir les feux
+			if (lfire.get(i).getId().equals(this.fire.getId())){//if checkFire(idFire)
+				ret=true;
+			}
+		}
+		return ret;
 	}
 
 }
