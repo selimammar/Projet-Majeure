@@ -2,7 +2,7 @@ var url = "http://vps.cpe-sn.fr:8081"
 var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
 var facilityID=173;
 
-// ------------------- Avant avoir créer l'app springboot, on a fait tous les calculs en front : -------------------------------
+// ------------------- Avant avoir créer l'app springboot, on a fait tous les calculs en front pour gagner des pts -------------------------------
 
 // Nous avons commenté l'appelation des fct qui gere les vehicules prsq on les gere dans le back (proj springboot) mnt
 
