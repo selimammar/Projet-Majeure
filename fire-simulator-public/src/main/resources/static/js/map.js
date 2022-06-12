@@ -4,11 +4,13 @@ var url = "http://vps.cpe-sn.fr:8081";
 var teamuuid = "eda70af1-4c45-4f0a-abb1-99bf8f6b8385"; 
 
 
+// creation de la map avec Leaflet et centralisation sur Lyon 
 var map = L.map('map',{
     center: [39.73, -104.99],
     zoom: 10,
 }).setView([45.732333858926715, 4.8260937761478795], 12);
 
+// les differents icons des elements
 var FacilityIcon = L.icon({
     iconUrl :  'images/caserne.png',
     iconSize : [50,50],
@@ -19,11 +21,12 @@ var FireIcon = L.icon({
     iconSize : [40,60],
 })
 
+// VehicleIcon
 var VehicleIcon = L.icon({
     iconUrl :  'images/camion.png',
     iconSize : [55,35],
 })
-
+// VehicleIcon2
 var VehicleIcon2 = L.icon({
     iconUrl :  'images/camion2.png',
     iconSize : [50,30],
@@ -36,6 +39,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }).addTo(map);
 
 
+// initialisations :
 
 var feu = [];
 var camions = [];
@@ -55,8 +59,10 @@ map.addLayer(lnotre_caserne);
 map.addLayer(lleurs_casernes);
 
 
+// Boucle d'affichage :
 
 function initMap (){
+    
     feu = [];
     camions = [];
     casernes = [];
