@@ -16,7 +16,7 @@ var vDto = {
     "type": "CAR"
 };
 
-
+// on construit les inputs à partir des elements du model dto
 
 var formCont = "";
 
@@ -28,11 +28,15 @@ for (var vDto_i in vDto) {
     formCont += formInput1 + vDto_i + formInput2 + vDto_i + formInput3;
 }
 
+// addForm
+
 var addForm = document.getElementById("add");
 var addFormCont = "<h1> Add Vehicle </h1>";
 addFormCont += formCont;
 addFormCont += "<input type='button' value='Add Vehicle' onclick='AddVehicle(this.form)'/>"
 addForm.innerHTML = addFormCont;
+
+// editForm
 
 var editForm = document.getElementById("edit");
 var editFormCont = "<h1> Edit Vehicle by ID </h1>";
@@ -40,6 +44,8 @@ editFormCont += "<label> ID to be edited</label><input type='text' name='editId'
 editFormCont += formCont;
 editFormCont += "<input type='button' value='Edit Vehicle' onclick='EditVehicle(this.form)'/>"
 editForm.innerHTML = editFormCont;
+
+// la delForm es déja crée dans map.html
 
 var delForm = document.getElementById("del");
 
@@ -95,6 +101,7 @@ const data = {
 
 function AddVehicle(form){
 
+    // on rempli la varible data à partir du form
     data.crewMember     =parseInt(form.crewMember.value);
     data.facilityRefID  =parseInt(form.facilityRefID.value);
     data.fuel           =parseInt(form.fuel.value);
@@ -105,7 +112,11 @@ function AddVehicle(form){
     data.lon            =parseFloat(form.lon.value);
     data.type           =form.type.value;
     console.log("vehicle to add :", data)
-    // verifier pas vide
+    
+    // verifier que chaque element est correcte (pas vide et pas NaN)
+    // faut que ce soit different de "" 
+    // et s'il n'est pas string, different de Nan ( not a number )
+    
     ok = true;
     Object.values(data).every(
         element => {
@@ -117,8 +128,10 @@ function AddVehicle(form){
             return true;
         } 
     );
+    // si element pas correcte => return (on ne termine pas la fct)
     if(!ok){return;}
 
+    // envoie de la requete post pour ajouter la voiture saisie
     fetch (url+'/vehicle/'+teamuuid, {
         method: 'POST',
         headers: {
@@ -133,6 +146,7 @@ function AddVehicle(form){
     })
     .catch(error => console.error('Error:', error));
 }
+
 
 function EditVehicle(form){
 
